@@ -73,10 +73,10 @@ def MCSearchAStar(node:Node,Goal:Node):
         PrintList(OpenList)
         PrintList(CloseList,"F")
 
-s = time.time()
-x = Node()
-x1 = Node(State=[0,0,0])
-MCSearchAStar(x,x1)
-print(time.time() - s)
+# s = time.time()
+# x = Node()
+# x1 = Node(State=[0,0,0])
+# MCSearchAStar(x,x1)
+# print(time.time() - s)
 
 
