@@ -1,3 +1,4 @@
+from Mc_shapes import Mc_shapes
 from SearchAlgos import MCSearchAStar
 from Nodes.Path import Path
 from Nodes.PathG import PathG
@@ -6,39 +7,217 @@ from Nodes.NodeG import NodeGraph
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from win import Ui_MainWindow
+from Window import Ui_MainWindow
 import sys
-
+import time
 class Main(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.cs = []
+        self.ms = []
         self.ui.CloseBtn.clicked.connect(self.close)
         self.ui.MinimizeBtn.clicked.connect(self.showMinimized)
         self.ui.MaximizeBtn.clicked.connect(self.Maxmin)
-        self.ui.btnTest.clicked.connect(self.AddNode)
-        self.ui.btnTest1.clicked.connect(self.StartMCA)
+        self.ui.AddNode.clicked.connect(self.AddNode)
+        self.ui.StartMC_A.clicked.connect(self.StartMCA)
+        self.ui.ClearScreen.clicked.connect(self.ui.TreeScene.clear)
         self.ui.HeadBar.mouseMoveEvent = self.DragMovement
         self.ui.HeadBar.mouseDoubleClickEvent = self.Maxmin
         self.setWindowFlag(Qt.FramelessWindowHint)
+
+        self.mypen = QPen(Qt.black)
+        self.mypen.setWidth(1)
+        self.DrawAnime()
+        self.Path=[]
+       
+        self.ui.MC_Scene.setSceneRect(0,0,300,300)
+
+
         self.show()
     
     def StartMCA(self):
         InitialNode = Node()
         GoalNode = Node(State=[0,0,0])
         ng = NodeGraph(InitialNode)
-        self.ui.Scene.addItem(ng)
-        MCSearchAStar(InitialNode,GoalNode)
+        self.ui.TreeScene.addItem(ng)
+        r = MCSearchAStar(InitialNode,GoalNode)
+        self.Path = r[1]
+        self.ui.Results_Display.append(r[0])
         self.DrawTree(ng)
+        self.ui.StartMC_A.setEnabled(False)
+        self.ui.Use_Solution.setEnabled(True)
+        self.ui.Use_Solution.clicked.connect(self.StartAnimation)
+
+
+    def MoveAllForward(self,items):
+        def test():
+            func = lambda:(items[1].setPos(230,100+self.ms.index(items[1]))
+            ,items[0].setPos(230,10+self.cs.index(items[0])),
+            self.Path.pop(-1),
+            self.StartAnimation()
+            )
+            if(len(items) !=  1):
+                self.animation1_0.start()
+            self.animation0.start()
+            self.animationb.start()
+            self.animationb.finished.connect(func)
+            
         
+        if(items != []):
+            self.groupAnimation = QSequentialAnimationGroup()   
+            self.animation = QPropertyAnimation(items[0],b"pos")
+            self.animation.setDuration(200)
+            self.animation.setEndValue(QPointF(self.b.pos().x()+5,self.b.pos().y()+5))
+
+            if(len(items) !=  1):
+                self.animation1 = QPropertyAnimation(items[1],b"pos")
+                self.animation1.setDuration(200)
+                self.animation1.setEndValue(QPointF(self.b.pos().x()+25,self.b.pos().y()+25))
+                self.groupAnimation.addAnimation(self.animation1)
+
+            self.groupAnimation.addAnimation(self.animation)
+
+            self.animationb = QPropertyAnimation(self.b,b"pos")
+            self.animationb.setDuration(200)
+            self.animationb.setEndValue(QPointF(150,100))
+
+            self.groupAnimation.start()
+            self.animation0 = QPropertyAnimation(items[0],b"pos")
+            self.animation0.setDuration(200)
+            self.animation0.setEndValue(QPointF(155,100))
+
+            if(len(items) !=  1):
+                self.animation1_0 = QPropertyAnimation(items[1],b"pos")
+                self.animation1_0.setDuration(200)
+                self.animation1_0.setEndValue(QPointF(175,125))
+            
+            self.groupAnimation.finished.connect(test)
+
+            
+            
+            
     
+    def MoveAllBackward(self,items):
+        def test():
+            func = lambda:(items[1].setPos(230,100+self.ms.index(items[1]))
+            ,items[0].setPos(230,10+self.cs.index(items[0])),
+            self.Path.pop(-1),
+            self.StartAnimation()
+            )
+            self.animation1_0.start()
+            self.animation0.start()
+            self.animationb.start()
+            self.animationb.finished.connect(func)
+            
+        
+        if(items != []):
+            self.groupAnimation = QSequentialAnimationGroup()   
+            self.animation = QPropertyAnimation(items[0],b"pos")
+            self.animation.setDuration(200)
+            self.animation.setEndValue(QPointF(self.b.pos().x()+5,self.b.pos().y()+5))
+
+            if(len(items) !=  1):
+                self.animation1 = QPropertyAnimation(items[1],b"pos")
+                self.animation1.setDuration(200)
+                self.animation1.setEndValue(QPointF(self.b.pos().x()+25,self.b.pos().y()+25))
+                self.groupAnimation.addAnimation(self.animation1)
+            
+            self.groupAnimation.addAnimation(self.animation)
+
+            self.animationb = QPropertyAnimation(self.b,b"pos")
+            self.animationb.setDuration(200)
+            self.animationb.setEndValue(QPointF(150,100))
+
+            self.groupAnimation.start()
+            self.animation0 = QPropertyAnimation(items[0],b"pos")
+            self.animation0.setDuration(200)
+            self.animation0.setEndValue(QPointF(155,100))
+
+            if(len(items) !=  1):
+                self.animation1_0 = QPropertyAnimation(items[1],b"pos")
+                self.animation1_0.setDuration(200)
+                self.animation1_0.setEndValue(QPointF(175,125))
+            self.groupAnimation.finished.connect(test)
+
+
+
+    def StartAnimation(self):
+        print(self.Path)
+        if(self.Path == []):
+            return
+
+        p = self.Path[len(self.Path)-2]
+        if(p[2] == 0):
+            items = []
+            if(p[0] - self.Path[-1][0] == -1):
+                for k in self.cs:
+                    if(k.state == 0):
+                        k.state = 1
+                        items.append(k)
+                        break
+            if(p[1] -self.Path[-1][1] == -1):
+                for k in self.ms:
+                    if(k.state == 0):
+                        k.state = 1
+                        items.append(k)
+                        break
+            self.MoveAllForward(items)
+        if(p[2] == 1):
+            items = []
+            print(p,self.Path[-1])
+            if(p[0] -self.Path[-1][0] == 1):
+                for k in self.cs:
+                    if(k.state == 1):
+                        k.state = 0
+                        items.append(k)
+                        break
+            if(p[1] -self.Path[-1][1] == 1):
+                for k in self.ms:
+                    if(k.state == 1):
+                        k.state = 0
+                        items.append(k)
+                        break
+            self.MoveAllBackward(items)
 
 
     def mousePressEvent(self, event:QMouseEvent):
         self.oldPos = event.globalPos()
     
+    def DrawAnime(self):
+        self.ui.MC_Scene.addRect(10,250,20,20,self.mypen,QBrush(Qt.red))
+        self.ui.MC_Scene.addEllipse(10,280,20,20,self.mypen,QBrush(Qt.gray))
+        t1 = self.ui.MC_Scene.addText("Canniable")
+        t2 = self.ui.MC_Scene.addText("Missionaire")
+        t1.setPos(30,250)
+        t2.setPos(30,280)
+
+        for i in range(1,4):
+            c = Mc_shapes(color=Qt.red)
+            c.state = 0
+            c.setPos(30,10+(i*30))
+            self.ui.MC_Scene.addItem(c)
+            self.cs.append(c)
         
+        for i in range(1,4):
+            m = Mc_shapes(shape="circle",color=Qt.gray)
+            m.state = 0
+            m.setPos(30,100+(i*30))
+            self.ui.MC_Scene.addItem(m)
+            self.ms.append(m)
+
+        self.b = Mc_shapes(size=(50,50),color=Qt.black)
+        self.b.setPos(100,100)
+        self.b.state = 0
+        self.ui.MC_Scene.addItem(self.b)
+        self.b.setZValue(-1)
+
+        
+
+        
+
+
     def Maxmin(self,event):
         if(not self.isMaximized()):
             icon = QIcon()
@@ -60,18 +239,18 @@ class Main(QMainWindow):
     def AddNode(self):
         self.nodes = Node("S")
         ng = NodeGraph(self.nodes)
-        self.ui.Scene.addItem(ng)
+        self.ui.TreeScene.addItem(ng)
 
     def DrawTree(self,Root:NodeGraph):
         if(len(Root.node.children) == 0):
             return   
         for (i,item) in enumerate(Root.node.children):
             itemG = NodeGraph(item)
-            itemG.setPos(Root.pos().x()+(50*i),Root.pos().y()+100)
+            itemG.setPos(Root.pos().x()+(150)*i,Root.pos().y()+100)
             edge = Path(Root.node,itemG.node,itemG.node.G - Root.node.G)
             edgebg= PathG(edge,Root,itemG)
-            self.ui.Scene.addItem(itemG)
-            self.ui.Scene.addItem(edgebg)
+            self.ui.TreeScene.addItem(itemG)
+            self.ui.TreeScene.addItem(edgebg)
             self.DrawTree(itemG)    
 
 if __name__=="__main__":

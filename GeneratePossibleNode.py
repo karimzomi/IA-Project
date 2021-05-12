@@ -2,17 +2,17 @@ from Nodes.Node import Node
 
 class ProblemMC():
     def __init__(self):
-        self.movesToRight = [[-2, 0], [-1, -1], [0, -2], [-1, 0], [0, -1]]
-        self.movesToLeft = [[2, 0], [1, 1], [0, 2], [1, 0], [0, 1]]
+        self.movesBackward = [[-2, 0], [-1, -1], [0, -2], [-1, 0], [0, -1]]
+        self.movesForward = [[2, 0], [1, 1], [0, 2], [1, 0], [0, 1]]
 
     def GeneratePossibleNodes(self,node:Node):
         state = node.STATE
         # result = []
         if(state[2] == 1):
-            moves = self.movesToRight
+            moves = self.movesBackward
             boat = 0
         else:
-            moves =  self.movesToLeft
+            moves =  self.movesForward
             boat = 1
         for i in moves:
             x = [state[0]+i[0],state[1]+i[1],boat]
@@ -39,5 +39,3 @@ class ProblemMC():
 
         return True
 
-
-# C=2 M=1  ----------- c=1 m=2

@@ -2,11 +2,13 @@ from Nodes.Node import Node
 from GeneratePossibleNode import ProblemMC
 import time
 
-def PrintList(l,s="O"):
+def FormatList(l,s="O"):
     result = f"{s}"+"{"
     for i in l:
         result +=f"{i.title}({i.G},{i.F},{i.h})"
-    print(result+"}")
+    if(s=="F"):
+        return " "+result+"}\n"
+    return result+"}"
 
 def ContainNode(List,node):
     j = 0
@@ -17,10 +19,11 @@ def ContainNode(List,node):
 
 def GeneralSearchAStar(node:Node,Goal:Node):
     currentNode = node
+    StringResult = ""
     OpenList = [currentNode]
     CloseList = []
-    PrintList(OpenList)
-    PrintList(CloseList,"F")
+    StringResult+= FormatList(OpenList)
+    StringResult+= FormatList(CloseList,"F")
     while currentNode != Goal and (ContainNode(OpenList,Goal) == -1):
         currentNode = OpenList.pop(0)
         for item in currentNode.children:
@@ -38,16 +41,17 @@ def GeneralSearchAStar(node:Node,Goal:Node):
         
         OpenList.sort(key=lambda node: node.F)
         CloseList.append(currentNode)
-        PrintList(OpenList)
-        PrintList(CloseList,"F")
-    return OpenList
+        StringResult+= FormatList(OpenList)
+        StringResult+= FormatList(CloseList,"F")
+    return StringResult
 
 def MCSearchAStar(node:Node,Goal:Node):
     currentNode = node
+    StringResult = ""
     OpenList = [currentNode]
     CloseList = []
-    PrintList(OpenList)
-    PrintList(CloseList,"F") 
+    StringResult+= FormatList(OpenList)
+    StringResult+= FormatList(CloseList,"F") 
     while (ContainNode(OpenList,Goal) == -1):
         currentNode = OpenList.pop(0)
         ProblemMC().GeneratePossibleNodes(currentNode)
@@ -70,8 +74,11 @@ def MCSearchAStar(node:Node,Goal:Node):
         OpenList.sort(key=lambda node: node.F)
 
         CloseList.append(currentNode)
-        PrintList(OpenList)
-        PrintList(CloseList,"F")
+        StringResult+= FormatList(OpenList)
+        StringResult+= FormatList(CloseList,"F")
+    GoalPos = ContainNode(OpenList,Goal)
+    Path = OpenList[GoalPos].GetParentsList()
+    return [StringResult,Path]
 
 # s = time.time()
 # x = Node()

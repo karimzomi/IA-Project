@@ -8,19 +8,20 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from TreeSceen import TreeSceen
+from Animeview import Animeview
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from TreeGraphics import TreeGraphics
+from TreeSceen import TreeSceen
 
-from resources import *
+import resources
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 599)
+        MainWindow.resize(900, 720)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"#centralwidget #Content{\n"
@@ -40,7 +41,33 @@ class Ui_MainWindow(object):
 "\n"
 "#HeadButtons #CloseBtn:hover{\n"
 "background-color:red;\n"
-
+"}\n"
+"#Content QPushButton{\n"
+"background-color:transparent;\n"
+"color:white;\n"
+"border:2px solid gray;\n"
+"border-radius:10px;\n"
+"padding:10px ;\n"
+"}\n"
+"#Content QPushButton:hover{\n"
+"background-color: rgb(44, 49, 57); \n"
+"}\n"
+"#Content QPushButton:pressed{\n"
+"background-color: gray; \n"
+"}\n"
+"#Content QPushButton:disabled{\n"
+"background-color: rgb(33, 37, 43); \n"
+"color:rgba(255,255,255,0.4"
+                        ");\n"
+"}\n"
+"#Content QLabel{\n"
+"color:white;\n"
+"}\n"
+"#Content QTextEdit{\n"
+"background:black;\n"
+"color:white;\n"
+"border:2px solid gray;\n"
+"border-radius:10px;\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setSpacing(0)
@@ -117,15 +144,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setSpacing(5)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.MenuBar = QFrame(self.Content)
-        self.MenuBar.setObjectName(u"MenuBar")
-        self.MenuBar.setMinimumSize(QSize(50, 0))
-        self.MenuBar.setMaximumSize(QSize(50, 16777215))
-        self.MenuBar.setFrameShape(QFrame.StyledPanel)
-        self.MenuBar.setFrameShadow(QFrame.Raised)
-
-        self.horizontalLayout_4.addWidget(self.MenuBar)
-
         self.MainContent = QFrame(self.Content)
         self.MainContent.setObjectName(u"MainContent")
         self.MainContent.setFrameShape(QFrame.StyledPanel)
@@ -138,19 +156,110 @@ class Ui_MainWindow(object):
         self.ContentScene.setObjectName(u"ContentScene")
         self.ContentScene.setFrameShape(QFrame.StyledPanel)
         self.ContentScene.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_3 = QVBoxLayout(self.ContentScene)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        
-        #############################################################
-        self.Scene = TreeSceen()
-        self.Scene.setBackgroundBrush(QBrush(QColor("#1f1f1f")))
-        self.view = TreeGraphics(self.Scene,MainWindow)
-        self.btnTest = QPushButton("Add Node")
-        self.btnTest1 = QPushButton("Start MC-A*")
+        self.gridLayout = QGridLayout(self.ContentScene)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(5, 5, 5, 5)
+        self.Tree_container = QFrame(self.ContentScene)
+        self.Tree_container.setObjectName(u"Tree_container")
+        self.Tree_container.setFrameShape(QFrame.StyledPanel)
+        self.Tree_container.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.Tree_container)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.label = QLabel(self.Tree_container)
+        self.label.setObjectName(u"label")
 
-        self.verticalLayout_3.addWidget(self.view)
-        self.verticalLayout_3.addWidget(self.btnTest)
-        self.verticalLayout_3.addWidget(self.btnTest1)
+        self.verticalLayout_4.addWidget(self.label, 0, Qt.AlignHCenter)
+
+        self.TreeScene = TreeSceen()
+        self.graphicsView = TreeGraphics(self.TreeScene,self.Tree_container)
+        self.graphicsView.setObjectName(u"graphicsView")
+        self.graphicsView.setRenderHints(QPainter.Antialiasing|QPainter.SmoothPixmapTransform|QPainter.TextAntialiasing)
+        self.graphicsView.setDragMode(QGraphicsView.RubberBandDrag)
+
+        self.verticalLayout_4.addWidget(self.graphicsView)
+
+        self.Btns_container2 = QFrame(self.Tree_container)
+        self.Btns_container2.setObjectName(u"Btns_container2")
+        self.Btns_container2.setMinimumSize(QSize(400, 50))
+        self.Btns_container2.setMaximumSize(QSize(500, 16777215))
+        self.Btns_container2.setFrameShape(QFrame.StyledPanel)
+        self.Btns_container2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.Btns_container2)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.AddNode = QPushButton(self.Btns_container2)
+        self.AddNode.setObjectName(u"AddNode")
+
+        self.horizontalLayout_5.addWidget(self.AddNode)
+
+        self.ClearScreen = QPushButton(self.Btns_container2)
+        self.ClearScreen.setObjectName(u"ClearScreen")
+
+        self.horizontalLayout_5.addWidget(self.ClearScreen)
+
+
+        self.verticalLayout_4.addWidget(self.Btns_container2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.gridLayout.addWidget(self.Tree_container, 1, 0, 1, 1)
+
+        self.Game_container = QFrame(self.ContentScene)
+        self.Game_container.setObjectName(u"Game_container")
+        self.Game_container.setMaximumSize(QSize(300, 16777215))
+        self.Game_container.setFrameShape(QFrame.StyledPanel)
+        self.Game_container.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_3 = QVBoxLayout(self.Game_container)
+        self.verticalLayout_3.setSpacing(6)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.label_2 = QLabel(self.Game_container)
+        self.label_2.setObjectName(u"label_2")
+
+        self.verticalLayout_3.addWidget(self.label_2, 0, Qt.AlignHCenter)
+
+        self.MC_Scene = QGraphicsScene()
+        self.MC_view = Animeview(self.MC_Scene,self.Game_container)
+        self.MC_view.setObjectName(u"MC_view")
+        self.MC_view.setMaximumSize(QSize(300, 16777215))
+
+        self.verticalLayout_3.addWidget(self.MC_view)
+
+        self.Btns_Container = QFrame(self.Game_container)
+        self.Btns_Container.setObjectName(u"Btns_Container")
+        self.Btns_Container.setMinimumSize(QSize(0, 50))
+        self.Btns_Container.setFrameShape(QFrame.StyledPanel)
+        self.Btns_Container.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_6 = QHBoxLayout(self.Btns_Container)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.StartMC_A = QPushButton(self.Btns_Container)
+        self.StartMC_A.setObjectName(u"StartMC_A")
+
+        self.horizontalLayout_6.addWidget(self.StartMC_A)
+
+        self.Use_Solution = QPushButton(self.Btns_Container)
+        self.Use_Solution.setObjectName(u"Use_Solution")
+        self.Use_Solution.setEnabled(False)
+
+        self.horizontalLayout_6.addWidget(self.Use_Solution)
+
+
+        self.verticalLayout_3.addWidget(self.Btns_Container)
+
+
+        self.gridLayout.addWidget(self.Game_container, 1, 1, 1, 1)
+
+        self.Results_Display = QTextEdit(self.ContentScene)
+        self.Results_Display.setObjectName(u"Results_Display")
+        self.Results_Display.setMaximumSize(QSize(16777215, 200))
+        self.Results_Display.setMinimumSize(QSize(0, 200))
+        self.Results_Display.setFont(QFont("Ubuntu",15))
+        self.Results_Display.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.Results_Display, 0, 0, 1, 2)
+
 
         self.verticalLayout.addWidget(self.ContentScene)
 
@@ -167,10 +276,8 @@ class Ui_MainWindow(object):
         self.Credits = QLabel(self.StatusBar)
         self.Credits.setObjectName(u"Credits")
 
-        self.sizegrip = QSizeGrip(MainWindow)
-
         self.horizontalLayout_3.addWidget(self.Credits)
-        self.horizontalLayout_3.addWidget(self.sizegrip)
+
 
         self.verticalLayout.addWidget(self.StatusBar)
 
@@ -193,6 +300,12 @@ class Ui_MainWindow(object):
         self.MinimizeBtn.setText("")
         self.MaximizeBtn.setText("")
         self.CloseBtn.setText("")
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Tree Section", None))
+        self.AddNode.setText(QCoreApplication.translate("MainWindow", u"Add Node", None))
+        self.ClearScreen.setText(QCoreApplication.translate("MainWindow", u"Clear Tree Screen", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Game Section", None))
+        self.StartMC_A.setText(QCoreApplication.translate("MainWindow", u"StartMC_A*", None))
+        self.Use_Solution.setText(QCoreApplication.translate("MainWindow", u"Use Solution", None))
         self.Credits.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
     # retranslateUi
 
