@@ -53,11 +53,14 @@ class Main(QMainWindow):
 
     def MoveAllForward(self,items):
         def test():
-            func = lambda:(items[1].setPos(230,100+self.ms.index(items[1]))
-            ,items[0].setPos(230,10+self.cs.index(items[0])),
-            self.Path.pop(-1),
-            self.StartAnimation()
-            )
+            def func():
+                for i in items:
+                    try:
+                        i.setPos(230,100+30*self.ms.index(i))
+                    except ValueError:
+                        i.setPos(230,10+30*self.cs.index(i))
+                self.Path.pop(-1)
+                self.StartAnimation()
             if(len(items) !=  1):
                 self.animation1_0.start()
             self.animation0.start()
@@ -68,29 +71,29 @@ class Main(QMainWindow):
         if(items != []):
             self.groupAnimation = QSequentialAnimationGroup()   
             self.animation = QPropertyAnimation(items[0],b"pos")
-            self.animation.setDuration(200)
+            self.animation.setDuration(500)
             self.animation.setEndValue(QPointF(self.b.pos().x()+5,self.b.pos().y()+5))
 
             if(len(items) !=  1):
                 self.animation1 = QPropertyAnimation(items[1],b"pos")
-                self.animation1.setDuration(200)
+                self.animation1.setDuration(500)
                 self.animation1.setEndValue(QPointF(self.b.pos().x()+25,self.b.pos().y()+25))
                 self.groupAnimation.addAnimation(self.animation1)
 
             self.groupAnimation.addAnimation(self.animation)
 
             self.animationb = QPropertyAnimation(self.b,b"pos")
-            self.animationb.setDuration(200)
+            self.animationb.setDuration(500)
             self.animationb.setEndValue(QPointF(150,100))
 
             self.groupAnimation.start()
             self.animation0 = QPropertyAnimation(items[0],b"pos")
-            self.animation0.setDuration(200)
+            self.animation0.setDuration(500)
             self.animation0.setEndValue(QPointF(155,100))
 
             if(len(items) !=  1):
                 self.animation1_0 = QPropertyAnimation(items[1],b"pos")
-                self.animation1_0.setDuration(200)
+                self.animation1_0.setDuration(500)
                 self.animation1_0.setEndValue(QPointF(175,125))
             
             self.groupAnimation.finished.connect(test)
@@ -100,13 +103,22 @@ class Main(QMainWindow):
             
     
     def MoveAllBackward(self,items):
+
         def test():
-            func = lambda:(items[1].setPos(230,100+self.ms.index(items[1]))
-            ,items[0].setPos(230,10+self.cs.index(items[0])),
-            self.Path.pop(-1),
-            self.StartAnimation()
-            )
-            self.animation1_0.start()
+            def func():
+                for i in items:
+                    try:
+                        i.setPos(30,100+30*self.ms.index(i))
+                    except ValueError:
+                        i.setPos(30,10+30*self.cs.index(i))
+                self.Path.pop(-1)
+                self.StartAnimation()
+
+
+
+            if(len(items) !=  1):
+                self.animation1_0.start()
+                
             self.animation0.start()
             self.animationb.start()
             self.animationb.finished.connect(func)
@@ -115,71 +127,85 @@ class Main(QMainWindow):
         if(items != []):
             self.groupAnimation = QSequentialAnimationGroup()   
             self.animation = QPropertyAnimation(items[0],b"pos")
-            self.animation.setDuration(200)
+            self.animation.setDuration(500)
             self.animation.setEndValue(QPointF(self.b.pos().x()+5,self.b.pos().y()+5))
 
             if(len(items) !=  1):
                 self.animation1 = QPropertyAnimation(items[1],b"pos")
-                self.animation1.setDuration(200)
+                self.animation1.setDuration(500)
                 self.animation1.setEndValue(QPointF(self.b.pos().x()+25,self.b.pos().y()+25))
                 self.groupAnimation.addAnimation(self.animation1)
             
             self.groupAnimation.addAnimation(self.animation)
 
             self.animationb = QPropertyAnimation(self.b,b"pos")
-            self.animationb.setDuration(200)
-            self.animationb.setEndValue(QPointF(150,100))
+            self.animationb.setDuration(500)
+            self.animationb.setEndValue(QPointF(100,100))
 
             self.groupAnimation.start()
             self.animation0 = QPropertyAnimation(items[0],b"pos")
-            self.animation0.setDuration(200)
-            self.animation0.setEndValue(QPointF(155,100))
+            self.animation0.setDuration(500)
+            self.animation0.setEndValue(QPointF(105,100))
 
             if(len(items) !=  1):
                 self.animation1_0 = QPropertyAnimation(items[1],b"pos")
-                self.animation1_0.setDuration(200)
-                self.animation1_0.setEndValue(QPointF(175,125))
+                self.animation1_0.setDuration(500)
+                self.animation1_0.setEndValue(QPointF(125,125))
             self.groupAnimation.finished.connect(test)
 
 
 
     def StartAnimation(self):
         print(self.Path)
-        if(self.Path == []):
+        if(self.Path == [] or self.Path[-1] == [0,0,0]):
             return
-
         p = self.Path[len(self.Path)-2]
+        print(p,self.Path[-1])
         if(p[2] == 0):
             items = []
-            if(p[0] - self.Path[-1][0] == -1):
-                for k in self.cs:
-                    if(k.state == 0):
-                        k.state = 1
-                        items.append(k)
+            if(abs(p[0] - self.Path[-1][0]) != 0):
+                c=0
+                for i in range(0,3):
+                    if(c == abs(p[0] - self.Path[-1][0])):
                         break
-            if(p[1] -self.Path[-1][1] == -1):
-                for k in self.ms:
-                    if(k.state == 0):
-                        k.state = 1
-                        items.append(k)
+                    if(self.cs[i].state == 0):
+                        self.cs[i].state = 1
+                        items.append(self.cs[i])
+                        c+=1
+            if(abs(p[1] - self.Path[-1][1]) != 0): 
+                c=0
+                for j in range(0,3):
+                    if(c == abs(p[1] - self.Path[-1][1])):
                         break
+                    if(self.ms[j].state == 0):
+                        self.ms[j].state = 1
+                        items.append(self.ms[j])
+                        c+=1
+
             self.MoveAllForward(items)
         if(p[2] == 1):
             items = []
-            print(p,self.Path[-1])
-            if(p[0] -self.Path[-1][0] == 1):
-                for k in self.cs:
-                    if(k.state == 1):
-                        k.state = 0
-                        items.append(k)
+            if(abs(p[0] - self.Path[-1][0]) != 0):
+                c=0
+                for i in range(0,3):
+                    if(c == abs(p[0] - self.Path[-1][0])):
                         break
-            if(p[1] -self.Path[-1][1] == 1):
-                for k in self.ms:
-                    if(k.state == 1):
-                        k.state = 0
-                        items.append(k)
+                    if(self.cs[i].state == 1):
+                        self.cs[i].state = 0
+                        items.append(self.cs[i])
+                        c+=1
+
+            if(abs(p[1] - self.Path[-1][1]) != 0): 
+                c=0
+                for j in range(0,3):
+                    if(c == abs(p[1] - self.Path[-1][1])):
                         break
+                    if(self.ms[j].state == 1):
+                        self.ms[j].state = 0
+                        items.append(self.ms[j])
+                        c+=1
             self.MoveAllBackward(items)
+        
 
 
     def mousePressEvent(self, event:QMouseEvent):

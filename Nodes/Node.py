@@ -39,7 +39,7 @@ class Node(Serializable):
 
     def GetParentsList(self):
         currentNode = self
-        result = []
+        result = [self.STATE]
         while currentNode.parent is not None:
             currentNode = currentNode.parent
             result.append(currentNode.STATE)
