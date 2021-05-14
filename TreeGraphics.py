@@ -1,5 +1,6 @@
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import *
+from PySide6.QtCore import Qt
 from Nodes.NodeG import NodeGraph
 from Nodes.Node import Node
 
@@ -12,8 +13,10 @@ class TreeGraphics(QGraphicsView):
     
 
     def initUI(self):
-        self.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing | QPainter.SmoothPixmapTransform)
+        self.setRenderHints(QPainter.Antialiasing  | QPainter.TextAntialiasing | QPainter.SmoothPixmapTransform)
         self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
+        # self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setDragMode(QGraphicsView.RubberBandDrag)
 
     def AddNode(self,Pos):

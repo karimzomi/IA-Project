@@ -223,6 +223,7 @@ class Ui_MainWindow(object):
         self.MC_view = Animeview(self.MC_Scene,self.Game_container)
         self.MC_view.setObjectName(u"MC_view")
         self.MC_view.setMaximumSize(QSize(300, 16777215))
+        self.MC_view.setMinimumSize(QSize(300, 0))
 
         self.verticalLayout_3.addWidget(self.MC_view)
 

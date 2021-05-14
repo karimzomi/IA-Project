@@ -71,29 +71,29 @@ class Main(QMainWindow):
         if(items != []):
             self.groupAnimation = QSequentialAnimationGroup()   
             self.animation = QPropertyAnimation(items[0],b"pos")
-            self.animation.setDuration(500)
+            self.animation.setDuration(1000)
             self.animation.setEndValue(QPointF(self.b.pos().x()+5,self.b.pos().y()+5))
 
             if(len(items) !=  1):
                 self.animation1 = QPropertyAnimation(items[1],b"pos")
-                self.animation1.setDuration(500)
+                self.animation1.setDuration(1000)
                 self.animation1.setEndValue(QPointF(self.b.pos().x()+25,self.b.pos().y()+25))
                 self.groupAnimation.addAnimation(self.animation1)
 
             self.groupAnimation.addAnimation(self.animation)
 
             self.animationb = QPropertyAnimation(self.b,b"pos")
-            self.animationb.setDuration(500)
+            self.animationb.setDuration(1000)
             self.animationb.setEndValue(QPointF(150,100))
 
             self.groupAnimation.start()
             self.animation0 = QPropertyAnimation(items[0],b"pos")
-            self.animation0.setDuration(500)
+            self.animation0.setDuration(1000)
             self.animation0.setEndValue(QPointF(155,100))
 
             if(len(items) !=  1):
                 self.animation1_0 = QPropertyAnimation(items[1],b"pos")
-                self.animation1_0.setDuration(500)
+                self.animation1_0.setDuration(1000)
                 self.animation1_0.setEndValue(QPointF(175,125))
             
             self.groupAnimation.finished.connect(test)
@@ -127,29 +127,29 @@ class Main(QMainWindow):
         if(items != []):
             self.groupAnimation = QSequentialAnimationGroup()   
             self.animation = QPropertyAnimation(items[0],b"pos")
-            self.animation.setDuration(500)
+            self.animation.setDuration(1000)
             self.animation.setEndValue(QPointF(self.b.pos().x()+5,self.b.pos().y()+5))
 
             if(len(items) !=  1):
                 self.animation1 = QPropertyAnimation(items[1],b"pos")
-                self.animation1.setDuration(500)
+                self.animation1.setDuration(1000)
                 self.animation1.setEndValue(QPointF(self.b.pos().x()+25,self.b.pos().y()+25))
                 self.groupAnimation.addAnimation(self.animation1)
             
             self.groupAnimation.addAnimation(self.animation)
 
             self.animationb = QPropertyAnimation(self.b,b"pos")
-            self.animationb.setDuration(500)
+            self.animationb.setDuration(1000)
             self.animationb.setEndValue(QPointF(100,100))
 
             self.groupAnimation.start()
             self.animation0 = QPropertyAnimation(items[0],b"pos")
-            self.animation0.setDuration(500)
+            self.animation0.setDuration(1000)
             self.animation0.setEndValue(QPointF(105,100))
 
             if(len(items) !=  1):
                 self.animation1_0 = QPropertyAnimation(items[1],b"pos")
-                self.animation1_0.setDuration(500)
+                self.animation1_0.setDuration(1000)
                 self.animation1_0.setEndValue(QPointF(125,125))
             self.groupAnimation.finished.connect(test)
 
@@ -268,16 +268,28 @@ class Main(QMainWindow):
         self.ui.TreeScene.addItem(ng)
 
     def DrawTree(self,Root:NodeGraph):
-        if(len(Root.node.children) == 0):
-            return   
+        L = len(Root.node.children)
+        if(L == 0):
+            return
+        # if(L % 2 == 0):
         for (i,item) in enumerate(Root.node.children):
             itemG = NodeGraph(item)
-            itemG.setPos(Root.pos().x()+(150)*i,Root.pos().y()+100)
+            itemG.setPos(Root.pos().x() - L*25 + 50*i + 25 ,Root.pos().y()+100)
             edge = Path(Root.node,itemG.node,itemG.node.G - Root.node.G)
             edgebg= PathG(edge,Root,itemG)
             self.ui.TreeScene.addItem(itemG)
             self.ui.TreeScene.addItem(edgebg)
             self.DrawTree(itemG)    
+        # else:
+        #     for (i,item) in enumerate(Root.node.children):
+        #         itemG = NodeGraph(item)
+        #         itemG.setPos(Root.pos().x() - (L//2) + 60*i,Root.pos().y()+100)
+        #         edge = Path(Root.node,itemG.node,itemG.node.G - Root.node.G)
+        #         edgebg= PathG(edge,Root,itemG)
+        #         self.ui.TreeScene.addItem(itemG)
+        #         self.ui.TreeScene.addItem(edgebg)
+        
+
 
 if __name__=="__main__":
     app = QApplication(sys.argv)
