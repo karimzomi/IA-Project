@@ -9,7 +9,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from Window import Ui_MainWindow
 import sys
-import time
+
 class Main(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
@@ -89,7 +89,7 @@ class Main(QMainWindow):
             self.groupAnimation.start()
             self.animation0 = QPropertyAnimation(items[0],b"pos")
             self.animation0.setDuration(1000)
-            self.animation0.setEndValue(QPointF(155,100))
+            self.animation0.setEndValue(QPointF(155,105))
 
             if(len(items) !=  1):
                 self.animation1_0 = QPropertyAnimation(items[1],b"pos")
@@ -108,7 +108,7 @@ class Main(QMainWindow):
             def func():
                 for i in items:
                     try:
-                        i.setPos(30,100+30*self.ms.index(i))
+                        i.setPos(30,150+30*self.ms.index(i))
                     except ValueError:
                         i.setPos(30,10+30*self.cs.index(i))
                 self.Path.pop(-1)
@@ -145,7 +145,7 @@ class Main(QMainWindow):
             self.groupAnimation.start()
             self.animation0 = QPropertyAnimation(items[0],b"pos")
             self.animation0.setDuration(1000)
-            self.animation0.setEndValue(QPointF(105,100))
+            self.animation0.setEndValue(QPointF(105,105))
 
             if(len(items) !=  1):
                 self.animation1_0 = QPropertyAnimation(items[1],b"pos")
@@ -280,14 +280,6 @@ class Main(QMainWindow):
             self.ui.TreeScene.addItem(itemG)
             self.ui.TreeScene.addItem(edgebg)
             self.DrawTree(itemG)    
-        # else:
-        #     for (i,item) in enumerate(Root.node.children):
-        #         itemG = NodeGraph(item)
-        #         itemG.setPos(Root.pos().x() - (L//2) + 60*i,Root.pos().y()+100)
-        #         edge = Path(Root.node,itemG.node,itemG.node.G - Root.node.G)
-        #         edgebg= PathG(edge,Root,itemG)
-        #         self.ui.TreeScene.addItem(itemG)
-        #         self.ui.TreeScene.addItem(edgebg)
         
 
 

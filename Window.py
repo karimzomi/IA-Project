@@ -276,8 +276,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.Credits = QLabel(self.StatusBar)
         self.Credits.setObjectName(u"Credits")
+        self.resizegrip = QSizeGrip(MainWindow)
 
         self.horizontalLayout_3.addWidget(self.Credits)
+        self.horizontalLayout_3.addWidget(self.resizegrip,Qt.AlignCenter,Qt.AlignRight)
 
 
         self.verticalLayout.addWidget(self.StatusBar)
@@ -297,7 +299,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.MainTitle.setText(QCoreApplication.translate("MainWindow", u"Application", None))
+        self.MainTitle.setText(QCoreApplication.translate("MainWindow", u"Projet IA", None))
         self.MinimizeBtn.setText("")
         self.MaximizeBtn.setText("")
         self.CloseBtn.setText("")
@@ -307,6 +309,6 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Game Section", None))
         self.StartMC_A.setText(QCoreApplication.translate("MainWindow", u"StartMC_A*", None))
         self.Use_Solution.setText(QCoreApplication.translate("MainWindow", u"Use Solution", None))
-        self.Credits.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.Credits.setText(QCoreApplication.translate("MainWindow", u"Eya Chaabani/Insaf Loussaief/Karim Zomita/Malek Chammakhi", None))
     # retranslateUi
 

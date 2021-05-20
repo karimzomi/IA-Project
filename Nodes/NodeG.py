@@ -54,7 +54,7 @@ class NodeGraph(QGraphicsItem):
         # self.title_item.setFlag(QGraphicsItem.ItemIsMovable)
     def initH(self):
         self.h_item = QGraphicsTextItem(self)
-        self.h_item.setPlainText(f"h({self.node.h})")
+        self.h_item.setPlainText(f"h = {self.node.h}")
         self.hposx = (self.boundingRect().width() / 2) - ( self.h_item.boundingRect().width() /2) 
         self.hposy = (self.boundingRect().height() / 2) -( self.h_item.boundingRect().height() /2) + 15
         self.h_item.setPos(self.hposx,self.hposy)
