@@ -18,7 +18,7 @@ class ProblemMC():
             x = [state[0]+i[0],state[1]+i[1],boat]
             if(self.CheckState(x)):
                 # result.append(x)
-                Child = Node(h=(x[0]+x[1])/2,State=x)
+                Child = Node(h=(x[0]+x[1]),State=x)
                 node.addChild(Child)
                 Child.G = Child.parent.G + abs(i[0])+abs(i[1])
         # return result
