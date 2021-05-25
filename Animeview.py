@@ -1,7 +1,6 @@
-from PySide6.QtCore import QRect, QRectF
+from PySide6.QtCore import QRectF
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-from Nodes.NodeG import NodeGraph
 
 class Animeview(QGraphicsView):
     def __init__(self, grscene:QGraphicsScene ,parent=None):
@@ -30,13 +29,6 @@ class Animeview(QGraphicsView):
         painter.setBrush(self.myGreenbrush)
         painter.drawRect(int(rect.left() + self.size().width()*2/3),int(rect.top()),self.size().width()/3,self.size().height())
        
-
-    # def resizeEvent(self, event: QResizeEvent) :
-    #     super().resizeEvent(event)
-    #     rect = self.scene().itemsBoundingRect()
-    #     self.fitInView(rect,Qt.KeepAspectRatio)
-
-
     def initUI(self):
         self.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing | QPainter.SmoothPixmapTransform)
         self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)

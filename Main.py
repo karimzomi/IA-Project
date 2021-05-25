@@ -214,7 +214,7 @@ class Main(QMainWindow):
     def DrawAnime(self):
         self.ui.MC_Scene.addRect(10,250,20,20,self.mypen,QBrush(Qt.red))
         self.ui.MC_Scene.addEllipse(10,280,20,20,self.mypen,QBrush(Qt.gray))
-        t1 = self.ui.MC_Scene.addText("Canniable")
+        t1 = self.ui.MC_Scene.addText("Cannibale")
         t2 = self.ui.MC_Scene.addText("Missionaire")
         t1.setPos(30,250)
         t2.setPos(30,280)
@@ -271,7 +271,6 @@ class Main(QMainWindow):
         L = len(Root.node.children)
         if(L == 0):
             return
-        # if(L % 2 == 0):
         for (i,item) in enumerate(Root.node.children):
             itemG = NodeGraph(item)
             itemG.setPos(Root.pos().x() - L*25 + 50*i + 25 ,Root.pos().y()+100)
