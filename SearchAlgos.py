@@ -5,7 +5,7 @@ import time
 def FormatList(l,s="O"):
     result = f"{s}"+"{"
     for i in l:
-        result +=f"{i.title}({i.G},{i.F},{i.h})"
+        result +=f"{i.title}({i.h},{i.G},{i.F})"
     if(s=="F"):
         return " "+result+"}\n"
     return result+"}"
