@@ -1,13 +1,12 @@
 from Nodes.Node import Node
 from GeneratePossibleNode import ProblemMC
-import time
 
 def FormatList(l,s="O"):
     result = f"{s}"+"{"
     for i in l:
         result +=f"{i.title}({i.h},{i.G},{i.F})"
     if(s=="F"):
-        return " "+result+"}\n"
+        return "\n"+result+"}\n\n"
     return result+"}"
 
 def ContainNode(List,node):
